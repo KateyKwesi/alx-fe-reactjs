@@ -1,6 +1,6 @@
 import Header from "./components/Header";
 import WelcomeMessage from "./components/WelcomeMessage";
-import { Main } from "./components/MainContent";
+import { MainContent } from "./components/MainContent";
 import { Footer } from "./components/Footer";
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <>
       <WelcomeMessage />
       <Header />
-      <Main />
+      <MainContent />
       <Footer />
     </>
   );
