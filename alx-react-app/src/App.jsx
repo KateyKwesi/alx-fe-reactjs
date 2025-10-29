@@ -1,8 +1,8 @@
 import Header from "./components/Header";
 import WelcomeMessage from "./components/WelcomeMessage";
-import { MainContent } from "./components/MainContent";
-import { Footer } from "./components/Footer";
-import { UserProfile } from "./components/UserProfile";
+import MainContent from "./components/MainContent";
+import Footer from "./components/Footer";
+import UserProfile from "./components/UserProfile";
 
 function App() {
   return (
