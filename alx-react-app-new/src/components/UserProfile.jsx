@@ -5,6 +5,7 @@ export default function UserProfile() {
         border: "2px solid blue",
         padding: "10px",
         margin: "10px",
+        color: "darkblue",
       }}
     >
       <span style={{ fontWeight: "bold" }}>Username:</span> Katey Kwesi
