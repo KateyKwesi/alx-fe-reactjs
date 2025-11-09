@@ -1,5 +1,13 @@
-<header
-  style={{ backgroundColor: "navy", color: "white", textAlign: "center" }}
->
-  <h1>My Favorite Cities</h1>
-</header>;
+export default function UserProfile() {
+  return (
+    <div
+      style={{
+        border: "2px solid blue",
+        padding: "10px",
+        margin: "10px",
+      }}
+    >
+      <span style={{ fontWeight: "bold" }}>Username:</span> Katey Kwesi
+    </div>
+  );
+}
