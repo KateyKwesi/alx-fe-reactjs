@@ -3,19 +3,23 @@ import { create } from "zustand";
 export const useRecipeStore = create((set, get) => ({
   recipes: [],
 
-  addRecipe: (recipe) =>
-    set((state) => ({ recipes: [...state.recipes, recipe] })),
+  setRecipes: (recipes) => set({ recipes }),
+
+  addRecipe: (newRecipe) =>
+    set((state) => ({
+      recipes: [...state.recipes, newRecipe],
+    })),
 
   updateRecipe: (id, updatedData) =>
     set((state) => ({
-      recipes: state.recipes.map((r) =>
-        r.id === id ? { ...r, ...updatedData } : r
+      recipes: state.recipes.map((recipe) =>
+        recipe.id === id ? { ...recipe, ...updatedData } : recipe
       ),
     })),
 
   deleteRecipe: (id) =>
     set((state) => ({
-      recipes: state.recipes.filter((r) => r.id !== id),
+      recipes: state.recipes.filter((recipe) => recipe.id !== id),
     })),
 
   searchTerm: "",
@@ -32,25 +36,25 @@ export const useRecipeStore = create((set, get) => ({
 
     set({
       filteredRecipes: recipes.filter(
-        (r) =>
-          r.title.toLowerCase().includes(term) ||
-          r.description.toLowerCase().includes(term)
+        (recipe) =>
+          recipe.title.toLowerCase().includes(term) ||
+          recipe.description.toLowerCase().includes(term)
       ),
     });
   },
 
   favorites: [],
 
-  addFavorite: (id) =>
+  addFavorite: (recipeId) =>
     set((state) =>
-      state.favorites.includes(id)
+      state.favorites.includes(recipeId)
         ? state
-        : { favorites: [...state.favorites, id] }
+        : { favorites: [...state.favorites, recipeId] }
     ),
 
-  removeFavorite: (id) =>
+  removeFavorite: (recipeId) =>
     set((state) => ({
-      favorites: state.favorites.filter((favId) => favId !== id),
+      favorites: state.favorites.filter((id) => id !== recipeId),
     })),
 
   recommendations: [],
@@ -60,11 +64,11 @@ export const useRecipeStore = create((set, get) => ({
 
     const favRecipes = recipes.filter((r) => favorites.includes(r.id));
 
-    const recommended = recipes.filter((recipe) => {
-      return favRecipes.some((fav) =>
+    const recommended = recipes.filter((recipe) =>
+      favRecipes.some((fav) =>
         fav.ingredients?.some((ing) => recipe.ingredients?.includes(ing))
-      );
-    });
+      )
+    );
 
     set({ recommendations: recommended.slice(0, 5) });
   },
