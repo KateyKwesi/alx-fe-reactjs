@@ -2,8 +2,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecipeStore } from './recipeStore';
-
-
+src/components/RecommendationsList.jsx
 
 const RecommendationsList = () => {
   const recommendations = useRecipeStore((state) => state.recommendations);
