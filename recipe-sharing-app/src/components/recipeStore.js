@@ -1,90 +1,39 @@
-// src/recipeStore.js
-import { create } from 'zustand';
-import { nanoid } from 'nanoid';
+import { create } from "zustand";
 
-
-
-export const useRecipeStore = create((setRecipes, getRecipes) => ({
+export const useRecipeStore = create((set, get) => ({
   recipes: [],
-  searchTerm: '',
+  searchTerm: "",
   filteredRecipes: [],
-  favorites: [],
-  recommendations: [],
 
-  // === RECIPES ===
-  addRecipe: (recipe) =>
-    setRecipes((state) => ({
-      recipes: [...state.recipes, { id: nanoid(), ...recipe }],
-    })),
+  setSearchTerm: (term) => {
+    set({ searchTerm: term });
 
-  updateRecipe: (updated) =>
-    setRecipes((state) => ({
-      recipes: state.recipes.map((r) =>
-        r.id === updated.id ? { ...r, ...updated } : r
-      ),
-    })),
-
-  deleteRecipe: (id) =>
-    setRecipes((state) => ({
-      recipes: state.recipes.filter((r) => r.id !== id),
-    })),
-
-  // === SEARCH ===
-  setRecipesSearchTerm: (term) => setRecipes({ searchTerm: term }),
+    const { filterRecipes } = get();
+    filterRecipes();
+  },
 
   filterRecipes: () => {
-    const { recipes, searchTerm } = getRecipes();
-    const term = searchTerm.toLowerCase().trim();
+    const { recipes, searchTerm } = get();
+    const term = searchTerm.toLowerCase();
 
     const filtered = recipes.filter((recipe) => {
-      const title = (recipe.title || '').toLowerCase();
-      const desc = (recipe.description || '').toLowerCase();
-      const ingredients = (recipe.ingredients || []).join(' ').toLowerCase();
-      return title.includes(term) || desc.includes(term) || ingredients.includes(term);
+      const matchesTitle = recipe.title.toLowerCase().includes(term);
+      const matchesIngredients = recipe.ingredients?.some((ing) =>
+        ing.toLowerCase().includes(term)
+      );
+      const matchesTime =
+        typeof recipe.prepTime === "number" &&
+        recipe.prepTime.toString().includes(term);
+
+      return matchesTitle || matchesIngredients || matchesTime;
     });
 
-    setRecipes({ filteredRecipes: filtered });
+    set({ filteredRecipes: filtered });
   },
 
-  // === FAVORITES ===
-  addFavorite: (recipeId) =>
-    setRecipes((state) => ({
-      favorites: [...new setRecipes([...state.favorites, recipeId])], // Prevent duplicates
-    })),
-
-  removeFavorite: (recipeId) =>
-    setRecipes((state) => ({
-      favorites: state.favorites.filter((id) => id !== recipeId),
-    })),
-
-  // === RECOMMENDATIONS ===
-  generateRecommendations: () => {
-    const { recipes, favorites } = getRecipes();
-    if (favorites.length === 0) {
-      setRecipes({ recommendations: [] });
-      return;
-    }
-
-    // Recommend recipes with matching ingredients from favorites
-    const favoriteRecipes = favorites.map((id) =>
-      recipes.find((r) => r.id === id)
-    ).filter(Boolean);
-
-    const commonIngredients = favoriteRecipes
-      .flatMap((r) => r.ingredients || [])
-      .reduce((acc, ing) => {
-        acc[ing] = (acc[ing] || 0) + 1;
-        return acc;
-      }, {});
-
-    const recommendations = recipes
-      .filter((recipe) => !favorites.includes(recipe.id))
-      .filter((recipe) => {
-        const recipeIngs = recipe.ingredients || [];
-        return recipeIngs.some((ing) => commonIngredients[ing] > 0);
-      })
-      .slice(0, 3); // Top 3
-
-    setRecipes({ recommendations });
-  },
+  addRecipe: (newRecipe) =>
+    set((state) => {
+      const updated = [...state.recipes, newRecipe];
+      return { recipes: updated };
+    }),
 }));
