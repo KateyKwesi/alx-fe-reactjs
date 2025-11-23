@@ -19,7 +19,7 @@ function Layout({ children }) {
 }
 
 function Home() {
-  return <h2>Welcome to the Home Page</h2>;
+  return;
 }
 
 function About() {
