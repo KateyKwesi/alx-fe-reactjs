@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { searchUsers } from "../services/githubService";
+import { fetchUserData, searchUsers } from "../services/githubService";
 
 export default function Search() {
   const [username, setUsername] = useState("");
@@ -11,32 +11,49 @@ export default function Search() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
 
-  const handleSearch = async (e, nextPage = 1) => {
+  const handleSingleUser = async (username) => {
+    try {
+      const data = await fetchUserData(username);
+      setUsers([data]);
+      setError("");
+      setHasMore(false);
+    } catch (err) {
+      setUsers([]);
+      setError("Looks like we cant find the user");
+    }
+  };
+
+  const handleAdvancedSearch = async (e, nextPage = 1) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      const data = await searchUsers({
-        username,
-        location,
-        minRepos,
-        page: nextPage,
-      });
-
-      if (data.items.length === 0 && nextPage === 1) {
-        setError("Looks like we cant find the user");
-      }
-
-      if (nextPage === 1) {
-        setUsers(data.items);
+      if (username && !location && !minRepos) {
+        await handleSingleUser(username);
       } else {
-        setUsers((prev) => [...prev, ...data.items]);
-      }
+        const data = await searchUsers({
+          username,
+          location,
+          minRepos,
+          page: nextPage,
+        });
 
-      setHasMore(data.items.length > 0);
-      setPage(nextPage);
+        if (data.items.length === 0 && nextPage === 1) {
+          setError("Looks like we cant find the user");
+        }
+
+        if (nextPage === 1) {
+          setUsers(data.items);
+        } else {
+          setUsers((prev) => [...prev, ...data.items]);
+        }
+
+        setHasMore(data.items.length > 0);
+        setPage(nextPage);
+      }
     } catch (err) {
+      setUsers([]);
       setError("Looks like we cant find the user");
     } finally {
       setLoading(false);
@@ -45,9 +62,10 @@ export default function Search() {
 
   return (
     <div className="max-w-xl mx-auto p-6">
+      {/* Search Form */}
       <form
         className="bg-white shadow-lg rounded-lg p-6 space-y-4"
-        onSubmit={(e) => handleSearch(e)}
+        onSubmit={handleAdvancedSearch}
       >
         <h2 className="text-xl font-bold mb-2">GitHub User Search</h2>
 
@@ -109,6 +127,7 @@ export default function Search() {
             />
             <div>
               <h3 className="font-semibold text-lg">{user.login}</h3>
+              <p className="text-gray-700">{user.location || "No location"}</p>
               <a
                 href={user.html_url}
                 target="_blank"
@@ -122,11 +141,10 @@ export default function Search() {
         ))}
       </div>
 
-      {/* Load More */}
       {hasMore && !loading && (
         <div className="text-center mt-4">
           <button
-            onClick={(e) => handleSearch(e, page + 1)}
+            onClick={(e) => handleAdvancedSearch(e, page + 1)}
             className="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-900"
           >
             Load More
