@@ -7,27 +7,13 @@ function Layout({ children }) {
   return (
     <div className="app-container">
       <header style={styles.header}>
-        <nav>
-          <Link to="/" style={styles.link}>
-            Home
-          </Link>
-          <Link to="/about" style={styles.link}>
-            About
-          </Link>
-        </nav>
+        <nav></nav>
       </header>
 
       <main style={styles.main}>{children}</main>
       <div style={{ padding: "2rem" }}>
-        <h1>GitHub User Search</h1>
         <Search />
       </div>
-      <footer style={styles.footer}>
-        <p>© {new Date().getFullYear()} My App</p>
-        <div className="bg-green-500 text-white p-4 rounded">
-          Tailwind is working!
-        </div>
-      </footer>
     </div>
   );
 }
