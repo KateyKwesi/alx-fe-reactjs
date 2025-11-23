@@ -18,7 +18,6 @@ export default function Search() {
       setError("");
       setHasMore(false);
     } catch (err) {
-      console.log(err);
       setUsers([]);
       setError("Looks like we cant find the user");
     }
@@ -54,7 +53,6 @@ export default function Search() {
         setPage(nextPage);
       }
     } catch (err) {
-      console.log(err);
       setUsers([]);
       setError("Looks like we cant find the user");
     } finally {
