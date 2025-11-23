@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Search from "./components/Search";
 
 function Layout({ children }) {
   const key = import.meta.env.VITE_APP_GITHUB_API_KEY;
@@ -17,7 +18,10 @@ function Layout({ children }) {
       </header>
 
       <main style={styles.main}>{children}</main>
-
+      <div style={{ padding: "2rem" }}>
+        <h1>GitHub User Search</h1>
+        <Search />
+      </div>
       <footer style={styles.footer}>
         <p>© {new Date().getFullYear()} My App</p>
       </footer>
