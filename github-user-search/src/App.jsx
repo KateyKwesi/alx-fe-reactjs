@@ -60,7 +60,7 @@ const styles = {
     marginRight: "1rem",
   },
   main: {
-    padding: "2rem",
+    padding: "2.1rem",
   },
   footer: {
     padding: "1rem",
