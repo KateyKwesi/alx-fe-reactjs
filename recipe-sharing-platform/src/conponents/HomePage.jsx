@@ -5,7 +5,6 @@ const HomePage = () => {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    // Load recipes from JSON
     setRecipes(recipeData);
   }, []);
 
