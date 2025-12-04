@@ -1,5 +1,7 @@
-export default function App() {
-  return (
-    <h1 className="text-3xl font-bold underline bg-slate-950 min-h-screen"></h1>
-  );
+import HomePage from "./components/HomePage";
+
+function App() {
+  return <HomePage />;
 }
+
+export default App;
