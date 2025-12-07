@@ -9,7 +9,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-7xl mx-auto px-4 py-8 grid-cols-1">
       <h1 className="text-3xl font-bold mb-6 text-center">
         Recipe Sharing Platform
       </h1>
