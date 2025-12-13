@@ -7,6 +7,8 @@ function RegistrationForm() {
     password: "",
   });
 
+  const { username, email, password } = formData;
+
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
@@ -17,7 +19,7 @@ function RegistrationForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.username || !formData.email || !formData.password) {
+    if (!username || !email || !password) {
       setError("All fields are required");
       return;
     }
@@ -49,11 +51,7 @@ function RegistrationForm() {
 
       <div>
         <label>Username:</label>
-        <input
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-        />
+        <input name="username" value={username} onChange={handleChange} />
       </div>
 
       <div>
@@ -61,7 +59,7 @@ function RegistrationForm() {
         <input
           name="email"
           type="email"
-          value={formData.email}
+          value={email}
           onChange={handleChange}
         />
       </div>
@@ -71,7 +69,7 @@ function RegistrationForm() {
         <input
           name="password"
           type="password"
-          value={formData.password}
+          value={password}
           onChange={handleChange}
         />
       </div>
