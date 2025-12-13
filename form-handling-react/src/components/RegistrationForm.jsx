@@ -9,7 +9,7 @@ function RegistrationForm() {
 
   const { username, email, password } = formData;
 
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,12 +19,22 @@ function RegistrationForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!username || !email || !password) {
-      setError("All fields are required");
+    if (!email) {
+      setErrors("Email is required");
       return;
     }
 
-    setError("");
+    if (!password) {
+      setErrors("Password is required");
+      return;
+    }
+
+    if (!username) {
+      setErrors("Username is required");
+      return;
+    }
+
+    setErrors("");
 
     try {
       const response = await fetch(
@@ -47,7 +57,7 @@ function RegistrationForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {errors && <p style={{ color: "red" }}>{errors}</p>}
 
       <div>
         <label>Username:</label>
