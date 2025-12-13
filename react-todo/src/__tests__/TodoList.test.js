@@ -39,5 +39,5 @@ test("deletes a todo", () => {
 
   fireEvent.click(deleteButton);
 
-  expect(todo).not.toBeInTheDocument();
+  expect(screen.queryByText("Learn React")).not.toBeInTheDocument();
 });

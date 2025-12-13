@@ -45,6 +45,7 @@ function TodoList() {
             }}
           >
             {todo.text}
+
             <button
               onClick={(e) => {
                 e.stopPropagation();
