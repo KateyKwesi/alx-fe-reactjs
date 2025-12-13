@@ -46,11 +46,9 @@ function RegistrationForm() {
         }
       );
 
-      const data = await response.json();
-      console.log("Registered:", data);
+      await response.json();
       alert("Registration successful");
     } catch (err) {
-      console.error(err);
       alert("Registration failed");
     }
   };
