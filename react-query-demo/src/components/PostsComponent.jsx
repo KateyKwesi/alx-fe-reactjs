@@ -11,6 +11,9 @@ function PostsComponent() {
     fetchPosts,
     {
       staleTime: 5000,
+      cacheTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
     }
   );
 
