@@ -34,10 +34,12 @@ test("toggles a todo", () => {
 test("deletes a todo", () => {
   render(<TodoList />);
 
-  const todo = screen.getByText("Learn React");
-  const deleteButton = todo.nextSibling;
+  const itemsBefore = screen.getAllByRole("listitem");
+  expect(itemsBefore.length).toBe(2);
 
-  fireEvent.click(deleteButton);
+  const deleteButtons = screen.getAllByText("Delete");
+  fireEvent.click(deleteButtons[0]);
 
-  expect(screen.queryByText("Learn React")).not.toBeInTheDocument();
+  const itemsAfter = screen.getAllByRole("listitem");
+  expect(itemsAfter.length).toBe(1);
 });
